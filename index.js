@@ -17,7 +17,7 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((error) =>
     console.log(
-      `Unable to connect, error = ${error}, ${username}, ${password}, ${dbUrl}`
+      `Unable to connect, error = ${error}, ${dbUrl}`
     )
   );
 
