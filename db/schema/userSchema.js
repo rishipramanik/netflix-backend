@@ -12,8 +12,9 @@ const UserSchema = new Schema({
   creationDate: Date,
   role: String,
   state: String,
+  profiles: [{ profileId: String, name: String, active: Boolean }],
 });
 
 module.exports = {
-    UserSchema
-}
+  UserSchema,
+};

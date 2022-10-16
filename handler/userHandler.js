@@ -25,6 +25,34 @@ function signupHandler(req, res) {
     .catch((error) => res.status(500).send(error));
 }
 
+function addNewProfile(req, res) {
+  const name = req.body.name;
+  const userId = req.userId;
+  UserService.addNewProfile(userId, name)
+    .then(() => {
+      res.status(200).send("Profile added successfully!");
+    })
+    .catch((error) => {
+      console.log(`error = ${error}`);
+      res.status(500).send(error);
+    });
+}
+
+function deactivateProfile(req, res) {
+  const profileId = req.params.profileId;
+  const userId = req.userId;
+  UserService.deactivateProfile(userId, profileId)
+  .then(() => {
+    res.status(200).send('Profile deactivated successfully')
+  })
+.catch(error => {
+  console.log(`error = ${error}`);
+  res.status(500).send(error)
+})
+}
+
 module.exports = {
   signupHandler,
+  addNewProfile,
+  deactivateProfile,
 };

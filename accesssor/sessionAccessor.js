@@ -10,7 +10,19 @@ function getSessionByKey(userId, token) {
   return Sessions.find(filterQuery).exec();
 }
 
+function removeSession(userId, token) {
+  getSessionByKey(userId, token)
+    .then((sessions) => sessions[0])
+    .then((session) => session.remove());
+}
+
+function getSessionsByUserId(userId) {
+  return Sessions.find({ userId }).exec();
+}
+
 module.exports = {
   createNewSession,
   getSessionByKey,
+  removeSession,
+  getSessionsByUserId,
 };

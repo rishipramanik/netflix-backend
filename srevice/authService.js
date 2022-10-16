@@ -1,7 +1,8 @@
 const R = require("ramda");
 const jwt = require("jsonwebtoken");
 const UserAccessor = require("../accesssor/userAccessor");
-const SECRET_KEY = "gyejgcbsdjkvgbdymfjhukjv";
+const SessionAccessor = require("../accesssor/sessionAccessor");
+const SECRET_KEY = "gyejgcbsdjkvgbdymfjhukjv57889";
 
 function login(email, password) {
   return UserAccessor.findByEmail(email).then((users) => {
@@ -20,8 +21,19 @@ function login(email, password) {
       { userId: user.userId, email: user.email, role: user.role },
       SECRET_KEY
     );
-    return { statusCode: 200, token: token };
+    const userId = user.userId;
+
+    return SessionAccessor.createNewSession(userId, token).then(() => ({
+      statusCode: 200,
+      token,
+    }));
   });
 }
 
-module.exports = { login };
+function logout(userId) {
+  return SessionAccessor.getSessionsByUserId(userId).then((sessions) => {
+    return Promise.all(sessions.map((session) => session.remove()));
+  });
+}
+
+module.exports = { login, logout };
