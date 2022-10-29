@@ -3,6 +3,7 @@ const { default: mongoose } = require("mongoose");
 const app = express();
 const UserHandler = require("./handler/userHandler");
 const AuthHandler = require("./handler/authHandler");
+const ShowHandler = require("./handler/showHandler");
 const Authentication = require("./middleware/authentication");
 const Authorization = require("./middleware/authorization");
 const Roles = require("./db/constants/roles");
@@ -55,6 +56,22 @@ app.post(
   Authentication.checkIfAuthenticated,
   Authorization.checkIfAuthorized([Roles.ROLE_USER, Roles.ROLE_CUSTOMER]),
   AuthHandler.logout
+);
+
+/** SHOW related API */
+
+app.get(
+  "/show/:showId",
+  Authentication.checkIfAuthenticated,
+  Authorization.checkIfAuthorized([Roles.ROLE_CUSTOMER, Roles.ROLE_USER]),
+  ShowHandler.getShowById
+);
+
+app.get(
+  "/show/:showId/series/:seriesId",
+  Authentication.checkIfAuthenticated,
+  Authorization.checkIfAuthorized([Roles.ROLE_CUSTOMER, Roles.ROLE_USER]),
+  ShowHandler.findSeriesByKey
 );
 
 app.listen(3000, function () {
