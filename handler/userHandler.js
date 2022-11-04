@@ -42,17 +42,52 @@ function deactivateProfile(req, res) {
   const profileId = req.params.profileId;
   const userId = req.userId;
   UserService.deactivateProfile(userId, profileId)
-  .then(() => {
-    res.status(200).send('Profile deactivated successfully')
-  })
-.catch(error => {
-  console.log(`error = ${error}`);
-  res.status(500).send(error)
-})
+    .then(() => {
+      res.status(200).send("Profile deactivated successfully");
+    })
+    .catch((error) => {
+      console.log(`error = ${error}`);
+      res.status(500).send(error);
+    });
+}
+
+function updateWatchHistory(req, res) {
+  const showId = req.params.showId;
+  const seriesId = req.params.seriesId;
+  const videoId = req.params.videoId;
+  const userId = req.userId;
+  const watchTime = req.body.watchTime;
+
+  UserService.updateWatchHistory(userId, showId, seriesId, videoId, watchTime)
+    .then(() => {
+      res.status(200).send("WatchHistorryUpdated");
+    })
+    .catch((error) => {
+      console.log(`error = ${error}`);
+      res.status(500).send(error);
+    });
+}
+
+function getWatchHistory(req, res) {
+  const showId = req.params.showId;
+  const seriesId = req.params.seriesId;
+  const videoId = req.params.videoId;
+  const userId = req.userId;
+
+  return UserService.getWatchHistory(userId, showId, seriesId, videoId)
+    .then((watchHistory) => {
+      res.status(200).send(watchHistory);
+    })
+    .catch((error) => {
+      console.log(`error = ${error}`);
+      res.status(500).send(error);
+    });
 }
 
 module.exports = {
   signupHandler,
   addNewProfile,
   deactivateProfile,
+  updateWatchHistory,
+  getWatchHistory,
 };

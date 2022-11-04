@@ -74,6 +74,27 @@ app.get(
   ShowHandler.findSeriesByKey
 );
 
+app.get(
+  "/show/:showId/series/:seriesId/video/:videoId/link",
+  Authentication.checkIfAuthenticated,
+  Authorization.checkIfAuthorized([Roles.ROLE_CUSTOMER]),
+  ShowHandler.findVideoLink
+);
+
+app.post(
+  "/show/:showId/series/:seriesId/video/:videoId/watchHistory",
+  Authentication.checkIfAuthenticated,
+  Authorization.checkIfAuthorized([Roles.ROLE_CUSTOMER]),
+  UserHandler.updateWatchHistory
+);
+
+app.get(
+  "/show/:showId/series/:seriesId/video/:videoId/watchHistory",
+  Authentication.checkIfAuthenticated,
+  Authorization.checkIfAuthorized([Roles.ROLE_CUSTOMER]),
+  UserHandler.getWatchHistory
+);
+
 app.listen(3000, function () {
   console.log("Server started on port 3000");
 });

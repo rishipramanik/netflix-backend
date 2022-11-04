@@ -32,7 +32,28 @@ function findSeriesByKey(req, res) {
   });
 }
 
+function findVideoLink(req, res) {
+  const showId = req.params.showId;
+  const seriesId = req.params.seriesId;
+  const videoId = req.params.videoId;
+
+  if (R.isNil(showId) || R.isNil(seriesId) || R.isNil(videoId)) {
+    res.status(400).send({ errorCode: "PARAMS_NULL" });
+  }
+
+  ShowService.findVideoLink(showId, seriesId, videoId).then((video) => {
+    if (!R.isNil(video)) {
+      res.status(200).send(video);
+    } else {
+      res
+        .status(400)
+        .send({ errorCode: "INVALID_SHOW_SERIES_VIDEO_COMBINATION" });
+    }
+  });
+}
+
 module.exports = {
   getShowById,
   findSeriesByKey,
+  findVideoLink,
 };
